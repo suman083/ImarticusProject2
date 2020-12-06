@@ -244,10 +244,51 @@ PPT$Three_Season_Lobby_Area[PPT$Three_Season_Lobby_Area<LB]<-LB
 
 
 
-#"Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price"
+#"Screen_Lobby_Area"   ## need too check
+barplot(table(PPT$Screen_Lobby_Area))
+boxplot(PPT$Screen_Lobby_Area,horizontal = T,col = 'blue')
+
+
+#"Pool_Area",
+
+barplot(table(PPT$Pool_Area))
+boxplot(PPT$Pool_Area,horizontal = T,col = 'blue')
+UB<-quantile(PPT$Pool_Area,0.75)+1.5*IQR(PPT$Pool_Area)
+UB
+PPT$Pool_Area[PPT$Pool_Area>UB]<-UB
+
+
+
+#"Miscellaneous_Value",
+barplot(table(PPT$Miscellaneous_Value))
+boxplot(PPT$Miscellaneous_Value,horizontal = T,col = 'blue')
+UB<-quantile(PPT$Pool_Area,0.75)+1.5*IQR(PPT$Pool_Area)
+UB
+PPT$Miscellaneous_Value[PPT$Miscellaneous_Value>UB]<-UB
+
+
+
+#"Month_Sold",   square may give better 
+barplot(table(PPT$Month_Sold))
+boxplot(PPT$Month_Sold,horizontal = T,col = 'blue')
+UB<-quantile(PPT$Month_Sold,0.75)+1.5*IQR(PPT$Month_Sold)
+UB
+PPT$Month_Sold[PPT$Month_Sold>UB]<-UB
+
+
+
+#"Year_Sold", square
+barplot(table(PPT$Year_Sold))
+boxplot(PPT$Year_Sold,horizontal = T,col = 'blue')
+UB<-quantile(PPT$Year_Sold,0.75)+1.5*IQR(PPT$Year_Sold)
+UB
+PPT$Year_Sold[PPT$Year_Sold>UB]<-UB
+
+
+#"Sale_Price"
 
 
 ##Test for all numeric column
-pairs.panels(PPT[c("Building_Class","Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
+pairs.panels(PPT[c("Building_Class","Lot_Extent","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
 
 cor(PPT[c("Building_Class","Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
