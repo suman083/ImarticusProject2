@@ -288,6 +288,14 @@ PPT$Year_Sold[PPT$Year_Sold>UB]<-UB
 #"Sale_Price"
 
 
+#anova test for catogorical variable
+zon.bul<-aov(Sale_Price ~ Zoning_Class, data = PPT)
+# Summary of the analysis
+summary(zon.bul)
+library(dplyr)
+TukeyHSD(zon.bul)
+
+
 ##Test for all numeric column
 pairs.panels(PPT[c("Building_Class","Lot_Extent","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
 
