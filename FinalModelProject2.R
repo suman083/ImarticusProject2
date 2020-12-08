@@ -2,11 +2,14 @@
 PPT <- read.csv("G:/Suman/batch34/project2/Datasheet/Property_Price_Train.csv", stringsAsFactors=TRUE)
 str(PPT)
 library(VIM)
+library(psych)
+#install.packages("dplyr")
+library(dplyr)
 PPT<-kNN(PPT) #NA value removed
 
 ##Column analysis
 
-#Building_Class
+#Building_Class ## NEED TO CHANGE IT FACTOR VARIABLE
 par(mfrow=c(2,1))
 bul_class=table(PPT$Building_Class)
 barplot(bul_class)
@@ -289,14 +292,43 @@ PPT$Year_Sold[PPT$Year_Sold>UB]<-UB
 
 
 #anova test for catogorical variable
+plot(Sale_Price ~ Zoning_Class, data = PPT,col="blue")
 zon.bul<-aov(Sale_Price ~ Zoning_Class, data = PPT)
 # Summary of the analysis
 summary(zon.bul)
 library(dplyr)
 TukeyHSD(zon.bul)
 
+## "BsmtFinType1","BsmtFinType2"
+plot(Sale_Price ~ BsmtFinType2+BsmtFinType1, data = PPT,col="blue")
+zon.bul<-aov(Sale_Price ~ BsmtFinType2+BsmtFinType1, data = PPT)
+summary(zon.bul)
+TukeyHSD(zon.bul)
+
+##Road_Type & Lane_Type
+plot(Sale_Price ~ Road_Type+Lane_Type, data = PPT,col="blue")
+zon.bul<-aov(Sale_Price ~ Road_Type+Lane_Type, data = PPT)
+summary(zon.bul)
+TukeyHSD(zon.bul)
+
+
+
+
 
 ##Test for all numeric column
-pairs.panels(PPT[c("Building_Class","Lot_Extent","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
+pairs.panels(PPT[c("Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","Sale_Price")])
+pairs.panels(PPT[c("Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","Sale_Price")])
+pairs.panels(PPT[c("W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
 
-cor(PPT[c("Building_Class","Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
+
+
+cor(PPT[c("Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
+
+model3_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold,data=PPT)
+
+summary(model3_lm)
+
+
+
+
+
