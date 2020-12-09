@@ -1,11 +1,16 @@
 
 PPT <- read.csv("G:/Suman/batch34/project2/Datasheet/Property_Price_Train.csv", stringsAsFactors=TRUE)
 str(PPT)
+PPT$W_Deck_Area_sq<-PPT$W_Deck_Area^2;
+
+
 library(VIM)
 library(psych)
 #install.packages("dplyr")
 library(dplyr)
 PPT<-kNN(PPT) #NA value removed
+PPT11<- read.csv("G:/Suman/batch34/project2/Datasheet/Property_Price_Train.csv", stringsAsFactors=TRUE)
+PPT11$Brick_Veneer_Area<-kNN(PPT11$Brick_Veneer_Area)
 
 ##Column analysis
 
@@ -299,6 +304,9 @@ summary(zon.bul)
 library(dplyr)
 TukeyHSD(zon.bul)
 
+ab<-lm(Sale_Price~Zoning_Class,data=PPT)
+summary(ab)
+
 ## "BsmtFinType1","BsmtFinType2"
 plot(Sale_Price ~ BsmtFinType2+BsmtFinType1, data = PPT,col="blue")
 zon.bul<-aov(Sale_Price ~ BsmtFinType2+BsmtFinType1, data = PPT)
@@ -324,11 +332,93 @@ pairs.panels(PPT[c("W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_
 
 cor(PPT[c("Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
 
-model3_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold,data=PPT)
+model3_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Road_Type+Utility_Type+Property_Slope+Condition2+BsmtFinType2+Miscellaneous_Feature, data=PPT)
 
 summary(model3_lm)
 
+#catogrical
+#Road_Type+Utility_Type+Property_Slope+Condition2+BsmtFinType2+Miscellaneous_Feature
 
+model4_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+
+summary(model4_lm)
+
+##
+model5_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+summary(model5_lm)
+
+#model 6
+
+model6_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+
+summary(model6_lm)
+
+#optimisation
+
+#Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold
+
+
+pairs.panels(PPT[c("Lot_Extent","Bedroom_Above_Grade","Garage_Built_Year","Garage_Size","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","W_Deck_Area","Screen_Lobby_Area","Pool_Area","Month_Sold","Year_Sold","Sale_Price")])
+
+##sold year,+W_Deck_Area removed
+model7_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Pool_Area+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+
+
+summary(model7_lm)
+
+##
+##sold year,+W_Deck_Area removed
+model8_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Bedroom_Above_Grade+Half_Bathroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Screen_Lobby_Area+Pool_Area+Month_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Zoning_Class+Roof_Quality+Brick_Veneer_Type+Pool_Area+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+
+
+summary(model8_lm)
+
+
+##sold year,+W_Deck_Area removed
+PPT$Open_Lobby_Area_sq<-PPT$Open_Lobby_Area^2
+PPT$Enclosed_Lobby_Area_sq<-PPT$Enclosed_Lobby_Area^2
+##+Garage_Built_Year+Screen_Lobby_Area
+#Bedroom_Above_Grade+Half_Bathroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+
+
+PPT$areacom<-PPT$Garage_Built_Year*PPT$Rooms_Above_Grade
+
+cor(PPT[c("Sale_Price","Garage_Built_Year","Half_Bathroom_Above_Grade","Rooms_Above_Grade")])
+model9_lm<-lm(Sale_Price~areacom+Garage_Built_Year+Garage_Size+Fireplaces+Pool_Area+Month_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Zoning_Class+Roof_Quality+Brick_Veneer_Type+Pool_Area+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+
+
+summary(model9_lm)
+View(PPT)
+
+View(PPT)
+
+#PPT$cond<-PPT$Garage_ConditionPPT$Condition1
+
+#PPT$years<-PPT$Garage_Built_Year*PPT$Garage_Finish_Year
+
+cor(PPT[c("Sale_Price","Heating_Quality","Roof_Quality","Garage_Quality","Fence_Quality")])
+
+SUBMODEL20<-lm(Sale_Price~Exterior_Condition+Exterior_Material,data = PPT)
+summary(SUBMODEL20)
+
+#27 variable
+
+model9_lm<-lm(Sale_Price~areacom+Garage_Size+Fireplaces+Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Pool_Area+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=PPT)
+
+
+summary(model9_lm)
+
+##Step added  areacom*Garage_Size*Fireplaces*Month_Sold
+#26
+PPT$allsqr<-(areacom*Garage_Size*Fireplaces*Month_Sold)^2
+model11_lm<-lm(Sale_Price~areacom+areacom*Garage_Size*Fireplaces*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=PPT)
+summary(model11_lm)
+str(model11_lm)
+
+#25
+PPT$allsqr<-(areacom*Garage_Size*Fireplaces*Month_Sold)^2
+model11_lm<-lm(Sale_Price~areacom*Fireplaces*Garage_Size*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=PPT)
+summary(model11_lm)
+str(model11_lm)
 
 
 
