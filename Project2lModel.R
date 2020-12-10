@@ -1,8 +1,11 @@
 Pr_P_Tr<- read.csv("G:/Suman/batch34/project2/Datasheet/Property_Price_Train.csv", stringsAsFactors=TRUE)
 View(Pr_P_Tr)
 library(psych)
+<<<<<<< HEAD
 condtn<-table(Pr_P_Tr$Condition2)
 plot(table(Pr_P_Tr$Condition2))
+=======
+>>>>>>> d31483e23907f8cb04cc1188c527fc6d60f40b42
 
 
 #Pr_P_Tr$Heating_Quality+Pr_P_Tr$Air_Conditioning+Pr_P_Tr$Electrical_System+Pr_P_Tr$First_Floor_Area+Pr_P_Tr$Second_Floor_Area+Pr_P_Tr$Grade_Living_Area+
@@ -19,6 +22,7 @@ model1_lm
 
 
 summary(model1_lm)
+<<<<<<< HEAD
 
 #Model2
 
@@ -47,3 +51,5 @@ summary(model3_lm)
 
 
 
+=======
+>>>>>>> d31483e23907f8cb04cc1188c527fc6d60f40b42
