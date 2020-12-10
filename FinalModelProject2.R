@@ -434,11 +434,16 @@ test
 ##Train and predict 
 numberrows<-nrow(PPT)
 train1<-head(PPT,numberrows*.7)
+predict1<-tail(PPT,numberrows*.3)
 
 PPT$allsqr<-(Garage_Size*Fireplaces*Month_Sold)^2
-model11_lm<-lm(Sale_Price~areacom*Fireplaces*Garage_Size*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=train1)
-summary(model11_lm)
-str(model11_lm)
+model12_lm_train<-lm(Sale_Price~areacom*Fireplaces*Garage_Size*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=train1)
+summary(model12_lm_train)
+#str(model11_lm)
 PPT$areacom
 
+model13_lm_predict<-lm(Sale_Price~areacom*Fireplaces*Garage_Size*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=predict1)
+summary(model13_lm_predict)
+
+pred<-predict(model11_lm,train)
 
