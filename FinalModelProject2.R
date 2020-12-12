@@ -436,7 +436,7 @@ numberrows<-nrow(PPT)
 train1<-head(PPT,numberrows*.7)
 predict1<-tail(PPT,numberrows*.3)
 
-PPT$allsqr<-(Garage_Size*Fireplaces*Month_Sold)^2
+PPT$allsqr<-(Garage_Size*Fireplaces*Month_Sold)^2 ##Multiple R-squared:  0.8865,	Adjusted R-squared:  0.8709 
 model12_lm_train<-lm(Sale_Price~areacom*Fireplaces*Garage_Size*Month_Sold+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+House_Type+Heating_Quality+Roof_Quality+Brick_Veneer_Type+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Functional_Rate+Garage+Garage_Quality+Pavedd_Drive+Sale_Type+Sale_Condition, data=train1)
 summary(model12_lm_train)
 #str(model11_lm)
@@ -447,3 +447,37 @@ summary(model13_lm_predict)
 
 pred<-predict(model11_lm,train)
 
+##final - Neighborhood to be added , Brick_Veneer_Area->to be removed
+PPT$allsqr<-(Garage_Size*Fireplaces*Month_Sold)^2
+model14_lm_train<-lm(Sale_Price~areacom*Fireplaces*Garage_Size+Exterior_Material+Full_Bathroom_Above_Grade+Kitchen_Quality+Brick_Veneer_Area+Foundation_Type+Basement_Height+Garage+Sale_Type, data=train1)
+summary(model14_lm_train)
+
+##--House_Type, Heating_Quality, Roof_Quality, Brick_Veneer_Type, to be added ->Exposure_Level, to be added -> BsmtFinType1,Functional_Rate to be added -> Air_Conditioning,Air_Conditioning,Heating_Type,Pavedd_Drive,Garage_Quality,Sale_Condition(less effective ), 
+PPT$gr_com<-PPT$Garage_Size*PPT$Brick_Veneer_Area
+fit=lm(Sale_Price~areacom*Fireplaces*gr_com+BsmtFinSF1+Exterior_Material+Kitchen_Quality+Fence_Quality+Remodel_Year+Basement_Height+Full_Bathroom_Above_Grade+Rooms_Above_Grade+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+First_Floor_Area+Grade_Living_Area,data = PPT)
+summary(fit)
+
+##
+train1<-head(PPT,numberrows*.7)
+View(train1)
+predict1<-tail(PPT,numberrows*.3)
+train1$Sale_Price2<-train1$Sale_Price
+barplot(table(train1$Sale_Price2))
+boxplot(train1$Sale_Price2,horizontal = T,col = 'blue')
+UB<-quantile(train1$Sale_Price2,0.75)+1.5*IQR(train1$Sale_Price2)
+UB
+train1$Sale_Price2[train1$Sale_Price2>UB]<-UB
+LB<-quantile(train1$Sale_Price2,0.25)-1.5*IQR(train1$Sale_Price2)
+LB
+train1$Sale_Price2[train1$Sale_Price2<LB]<-LB
+
+fit=lm(Sale_Price2~areacom*Fireplaces*gr_com+BsmtFinSF1+Exterior_Material+Kitchen_Quality+Fence_Quality+Remodel_Year+Basement_Height+Full_Bathroom_Above_Grade+Rooms_Above_Grade+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+First_Floor_Area+Grade_Living_Area,data = train1)
+summary(fit)
+##areacom*Fireplaces*gr_com
+
+
+train1<-head(PPT,1)
+View(train1)
+###BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Basement_Height+Fireplaces+Garage_Size+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+Grade_Living_Area
+fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = train1)
+summary(fit1) ###87 WIN normalizePath
