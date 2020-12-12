@@ -1,6 +1,8 @@
 
 PPT <- read.csv("G:/Suman/batch34/project2/Datasheet/Property_Price_Train.csv", stringsAsFactors=TRUE)
 str(PPT)
+view(PPT)
+describe(PPT)
 PPT$W_Deck_Area_sq<-PPT$W_Deck_Area^2;
 
 
@@ -296,7 +298,7 @@ PPT$Year_Sold[PPT$Year_Sold>UB]<-UB
 #"Sale_Price"
 
 
-#anova test for catogorical variable
+#anova test for categorical variable
 plot(Sale_Price ~ Zoning_Class, data = PPT,col="blue")
 zon.bul<-aov(Sale_Price ~ Zoning_Class, data = PPT)
 # Summary of the analysis
@@ -332,6 +334,7 @@ pairs.panels(PPT[c("W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_
 
 cor(PPT[c("Lot_Extent","Lot_Size","Overall_Material","House_Condition","Construction_Year","Remodel_Year","Brick_Veneer_Area","BsmtFinSF1","BsmtFinSF2","BsmtUnfSF","Total_Basement_Area","First_Floor_Area","Second_Floor_Area","LowQualFinSF","Grade_Living_Area","Underground_Full_Bathroom","Underground_Half_Bathroom","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","Garage_Area","W_Deck_Area","Open_Lobby_Area","Enclosed_Lobby_Area","Three_Season_Lobby_Area","Screen_Lobby_Area","Pool_Area","Miscellaneous_Value","Month_Sold","Year_Sold","Sale_Price")])
 
+cor(PPT[c("Sale_Price","Zoning_Class","Road_Type","Lane_Type","Property_Shape","Land_Outline","Utility_Type")])
 model3_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Road_Type+Utility_Type+Property_Slope+Condition2+BsmtFinType2+Miscellaneous_Feature, data=PPT)
 
 summary(model3_lm)
@@ -430,6 +433,7 @@ train<-subset(PPT,split="TRUE")
 test<-subset(PPT,split="FALSE")
 train
 test
+pridict_price<-predict(model11_lm,train)
 
 ##Train and predict 
 numberrows<-nrow(PPT)
@@ -481,3 +485,110 @@ View(train1)
 ###BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Basement_Height+Fireplaces+Garage_Size+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+Grade_Living_Area
 fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = train1)
 summary(fit1) ###87 WIN normalizePath
+
+fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
+summary(fit1)
+
+library(caTools)
+split<-sample.split(PPT,SplitRatio = 0.7)
+split
+train<-subset(PPT,split="TRUE")
+test<-subset(PPT,split="FALSE")
+train
+test
+pridict_train<-predict(fit1,train)
+
+summary(pridict_train)
+
+predict_test<-predict(fit1,test)
+summary(predict_test)
+vif(fit1)
+
+library(tidyverse)
+install.packages("HH")
+library(HH)
+
+error<-residuals(fit1)
+error
+summary(error)
+hist(error)
+boxplot(error)
+
+
+##################Final model rework
+
+
+fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
+summary(fit1)
+
+library(caTools)
+split<-sample.split(PPT,SplitRatio = 0.7)
+split
+train<-subset(PPT,split="TRUE")
+test<-subset(PPT,split="FALSE")
+train
+test
+pridict_train<-predict(fit1,train)
+
+summary(pridict_train)
+
+predict_test<-predict(fit1,test)
+summary(predict_test)
+
+
+library(tidyverse)
+install.packages("HH")
+library(HH)
+#Assumption 1: Normality of error
+
+PPT$error<-residuals(fit1)
+error
+summary(error)
+hist(error)
+boxplot(error)
+
+#Assumption 2: Linearity
+plot(PPT$Sale_Price,error,main="linearity",col="blue")
+
+#Assumption 3: Independence of error
+plot(PPT$Id,PPT$error, main="Independence of error",col="blue")
+# Assumption 4: Independence of error X axis: predicted values; Y axis: error
+
+plot(pridict_train,PPT$error, main="Independence of error",col="blue")
+
+#multicolinearity 
+vif(fit1)
+
+error<-residuals(fit1)
+error
+summary(error)
+hist(error)
+boxplot(error)
+
+## 2nd Final model
+###BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Basement_Height+Fireplaces+Garage_Size+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+Grade_Living_Area
+fit_final=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Grade_Living_Area,data = PPT)
+summary(fit_final) ###87 WIN normalizePath
+
+#Assumption 1: Normality of error
+
+PPT$error<-residuals(fit_final)
+error
+summary(error)
+hist(error)
+boxplot(error)
+
+#Assumption 2: Linearity
+plot(PPT$Sale_Price,error,main="linearity",col="blue")
+
+#Assumption 3: Independence of error
+plot(PPT$Id,PPT$error, main="Independence of error",col="blue")
+# Assumption 4: Independence of error X axis: predicted values; Y axis: error
+
+plot(pridict_train,PPT$error, main="Independence of error",col="blue")
+
+#multicolinearity 
+
+vif(fit_final)
+
+
