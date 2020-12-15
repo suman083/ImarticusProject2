@@ -19,12 +19,13 @@ PPT11$Brick_Veneer_Area<-kNN(PPT11$Brick_Veneer_Area)
 #Building_Class ## NEED TO CHANGE IT FACTOR VARIABLE
 par(mfrow=c(2,1))
 bul_class=table(PPT$Building_Class)
-barplot(bul_class)
-boxplot(PPT$Building_Class,horizontal = T,col = 'blue')
+barplot(bul_class,col = 'blue',main = "Building_Class",xlab = "Building_Class",ylab = 'Sale_price')
+boxplot(PPT$Building_Class,horizontal = T,col = 'blue',main = "Building_Class")
 #3 outliers
 UB<-quantile(PPT$Building_Class,0.75)+1.5*IQR(PPT$Building_Class)
 UB
 PPT$Building_Class[PPT$Building_Class>UB]<-UB
+describe(PPT$Building_Class)
 
 #Lot_Extent(SQUARE WILL HELP)
 Lot_Extent1=table(PPT$Lot_Extent)
@@ -344,17 +345,19 @@ summary(model3_lm)
 
 model4_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Underground_Full_Bathroom+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
 
-summary(model4_lm)
+summary(model4_lm) #88%
 
 ##
 model5_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
-summary(model5_lm)
+summary(model5_lm)  #88%
 
 #model 6
 
 model6_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+W_Deck_Area+Screen_Lobby_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
 
-summary(model6_lm)
+summary(model6_lm)#88
+vif(model6_lm)
+
 
 #optimisation
 
@@ -363,11 +366,12 @@ summary(model6_lm)
 
 pairs.panels(PPT[c("Lot_Extent","Bedroom_Above_Grade","Garage_Built_Year","Garage_Size","Full_Bathroom_Above_Grade","Half_Bathroom_Above_Grade","Bedroom_Above_Grade","Kitchen_Above_Grade","Rooms_Above_Grade","Fireplaces","Garage_Built_Year","Garage_Size","W_Deck_Area","Screen_Lobby_Area","Pool_Area","Month_Sold","Year_Sold","Sale_Price")])
 
-##sold year,+W_Deck_Area removed
-model7_lm<-lm(Sale_Price~Lot_Extent+Bedroom_Above_Grade+Garage_Built_Year+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Bedroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Built_Year+Garage_Size+Screen_Lobby_Area+Pool_Area+Month_Sold+Year_Sold+Lot_Configuration+Land_Outline+Lot_Configuration+Property_Slope+Neighborhood+Condition1+House_Type+Heating_Quality+Exterior2nd+House_Design+Zoning_Class+Roof_Quality+Exterior1st+Brick_Veneer_Type+Pool_Area+Exterior_Condition+Exterior_Material+Foundation_Type+Basement_Height+Exposure_Level+BsmtFinType1+Heating_Type+Air_Conditioning+Electrical_System+Kitchen_Quality+Functional_Rate+Garage+Garage_Finish_Year+Garage_Quality+Garage_Condition+Pavedd_Drive+Fence_Quality+Sale_Type+Sale_Condition, data=PPT)
+##sold year,+W_Deck_Area removed 88.9
+model7_lm<-lm(Sale_Price~Lot_Extent+Garage_Size+Full_Bathroom_Above_Grade+Half_Bathroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Size+Lot_Configuration+Lot_Configuration+Neighborhood+House_Type+Zoning_Class+Roof_Quality+Exterior_Condition+Basement_Height+Exposure_Level+BsmtFinType1+Kitchen_Quality, data=PPT)
 
 
 summary(model7_lm)
+vif(model7_lm)
 
 ##
 ##sold year,+W_Deck_Area removed
@@ -483,7 +487,7 @@ summary(fit)
 train1<-head(PPT,1)
 View(train1)
 ###BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Basement_Height+Fireplaces+Garage_Size+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+Grade_Living_Area
-fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = train1)
+fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
 summary(fit1) ###87 WIN normalizePath
 
 fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
@@ -518,7 +522,7 @@ boxplot(error)
 ##################Final model rework
 
 
-fit1=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
+fit1=lm(Sale_Price2~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area*Grade_Living_Area,data = PPT)
 summary(fit1)
 
 library(caTools)
@@ -537,14 +541,14 @@ summary(predict_test)
 
 
 library(tidyverse)
-install.packages("HH")
+#install.packages("HH")
 library(HH)
 #Assumption 1: Normality of error
 
 PPT$error<-residuals(fit1)
 error
 summary(error)
-hist(error)
+hist(error,main="Normality of error",col="blue")
 boxplot(error)
 
 #Assumption 2: Linearity
@@ -567,19 +571,32 @@ boxplot(error)
 
 ## 2nd Final model
 ###BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Basement_Height+Fireplaces+Garage_Size+Lot_Size+Overall_Material+Construction_Year+Total_Basement_Area+Grade_Living_Area
-fit_final=lm(Sale_Price~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Brick_Veneer_Area+Remodel_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Construction_Year+Grade_Living_Area,data = PPT)
+fit_final=lm(Sale_Price2~BsmtFinSF1+Exterior_Material+Kitchen_Quality+Remodel_Year+Construction_Year+Basement_Height+Fireplaces+Lot_Size+Overall_Material+Grade_Living_Area/Brick_Veneer_Area,data = PPT)
 summary(fit_final) ###87 WIN normalizePath
+
+split<-sample.split(PPT,SplitRatio = 0.7)
+split
+train<-subset(PPT,split="TRUE")
+test<-subset(PPT,split="FALSE")
+train
+test
+pridict_train<-predict(fit_final,train)
+
+summary(pridict_train)
+
+predict_test<-predict(fit_final,test)
+summary(predict_test)
 
 #Assumption 1: Normality of error
 
 PPT$error<-residuals(fit_final)
-error
-summary(error)
-hist(error)
-boxplot(error)
+PPT$error
+summary(PPT$error)
+hist(PPT$error)
+boxplot(PPT$error,horizontal = T)
 
 #Assumption 2: Linearity
-plot(PPT$Sale_Price,error,main="linearity",col="blue")
+plot(PPT$Sale_Price,PPT$error,main="linearity",col="blue")
 
 #Assumption 3: Independence of error
 plot(PPT$Id,PPT$error, main="Independence of error",col="blue")
@@ -590,5 +607,130 @@ plot(pridict_train,PPT$error, main="Independence of error",col="blue")
 #multicolinearity 
 
 vif(fit_final)
+##################################################################################
+###Improved model
 
+PPT$Sale_Price2<-PPT$Sale_Price
+barplot(table(PPT$Sale_Price2))
+boxplot(PPT$Sale_Price2,horizontal = T,col = 'blue')
+UB<-quantile(PPT$Sale_Price2,0.75)+1.5*IQR(PPT$Sale_Price2)
+UB
+PPT$Sale_Price2[PPT$Sale_Price2>UB]<-UB
+LB<-quantile(PPT$Sale_Price2,0.25)-1.5*IQR(PPT$Sale_Price2)
+LB
+PPT$Sale_Price2[PPT$Sale_Price2<LB]<-LB
+
+hist(PPT$Total_Basement_Area)
+desc(PPT$Total_Basement_Area)
+summary(PPT$Total_Basement_Area)
+describe((PPT$Total_Basement_Area))
+
+hist(log(PPT$Lot_Size))##finished
+summary(PPT$Lot_Size)
+hist((PPT$Lot_Size))
+describe(log(PPT$Lot_Size))
+PPT$Lot_Size_log<-log(PPT$Lot_Size)
+
+hist(PPT$BsmtFinSF1)
+#PPT$BsmtFinSF1[PPT$BsmtFinSF1==0]<-.002
+hist(PPT$BsmtFinSF1)
+hist(sqrt(PPT$BsmtFinSF1))
+PPT$BsmtFinSF1_sqrt<-sqrt(PPT$BsmtFinSF1)
+PPT$BsmtFinSF1_log<-log(PPT$BsmtFinSF1)
+#PPT$BsmtFinSF1_log[PPT$BsmtFinSF1<1]<-0
+hist((PPT$BsmtFinSF1_log))
+boxplot(PPT$BsmtFinSF1_log,main="BsmtFinSF1_log")
+#PPT$Miscellaneous_Value[PPT$Miscellaneous_Value<1]<-0
+#log()
+
+hist(PPT$Remodel_Year)
+describe(PPT$Remodel_Year)
+hist(sqrt(PPT$Remodel_Year))
+
+##
+PPT$Grade_Living_Area_log<-log(PPT$Grade_Living_Area)
+hist(sqrt(PPT$Grade_Living_Area))
+describe(PPT$Grade_Living_Area)
+
+##basement
+hist(PPT$Fireplaces^2)
+describe(PPT$Fireplaces^2)
+barplot(table((PPT$Fireplaces)))
+describe(PPT$Fireplaces)
+
+##years
+summary(PPT$Remodel_Year)
+describe(PPT$Remodel_Year)
+str(PPT$Remodel_Year)
+dim(PPT$Remodel_Year)
+A<-table(PPT$Remodel_Year)
+A
+PPT<-within(PPT,{
+  Remodel_Year_CAT<-NA
+  Remodel_Year_CAT[Remodel_Year>=1950 & Remodel_Year<=1960]<-'1'
+  Remodel_Year_CAT[Remodel_Year>1960 & Remodel_Year<=1970]<-'2'
+  Remodel_Year_CAT[Remodel_Year>1970 & Remodel_Year<=1980]<-'3'
+  Remodel_Year_CAT[Remodel_Year>1980 & Remodel_Year<=1990]<-'4'
+  Remodel_Year_CAT[Remodel_Year>1990 & Remodel_Year<=2000]<-'5'
+  Remodel_Year_CAT[Remodel_Year>2000 & Remodel_Year<=2010 ]<-'6'
+})
+
+barplot(table(PPT$Brick_Veneer_Area))
+PPT$Brick_Veneer_Area2<-PPT$Brick_Veneer_Area+1
+hist(sqrt(PPT$Brick_Veneer_Area2))
+
+
+Remodel_Year_CAT
+pairs.panels(PPT[c("Sale_Price","BsmtFinSF1","Exterior_Material","Brick_Veneer_Area","Basement_Height","Fireplaces","Lot_Size","Overall_Material","Grade_Living_Area")])
+fit_final2=lm(Sale_Price~Exterior_Material+Neighborhood+Remodel_Year+Construction_Year+Basement_Height+Fireplaces+Lot_Size_log+Overall_Material+Grade_Living_Area/Total_Basement_Area+BsmtFinSF1_sqrt+Exposure_Level, data = PPT)
+summary(fit_final2) ###87 WIN normalizePath
+
+#training and test
+
+split<-sample.split(PPT,SplitRatio = 0.7)
+split
+train<-subset(PPT,split="TRUE")
+test<-subset(PPT,split="FALSE")
+train
+test
+pridict_train<-predict(fit_final2,train)
+
+summary(pridict_train)
+
+predict_test<-predict(fit_final2,test)
+summary(predict_test)
+
+#Assumption 1: Normality of error
+
+error<-residuals(fit_final2)
+error
+summary(error)
+hist(error,col = "blue")
+boxplot(error,horizontal = T,col = "blue")
+describe(error)
+
+#Assumption 2: Linearity
+plot(PPT$Sale_Price,PPT$error,main="linearity",col="blue")
+
+#Assumption 3: Independence of error
+plot(PPT$Id,PPT$error, main="Independence of error",col="blue")
+# Assumption 4: Constant  of error variance X axis: predicted values; Y axis: error
+
+plot(pridict_train,PPT$error, main="Constant  of error variance",col="blue")
+
+#multicolinearity 
+
+vif(fit_final2)
+dim()
+
+
+###last 
+last_lm<-lm(Sale_Price~Lot_Extent+Garage_Size+Full_Bathroom_Above_Grade+Kitchen_Above_Grade+Rooms_Above_Grade+Fireplaces+Garage_Size+Neighborhood+House_Type+Zoning_Class+Roof_Quality+Exterior_Condition+Basement_Height+Kitchen_Quality+Exposure_Level, data=PPT)
+
+
+summary(last_lm)
+vif(last_lm)
+
+fit_final3=lm(Sale_Price~Exterior_Material+Neighborhood+Remodel_Year+Construction_Year+Basement_Height+Fireplaces+Lot_Size_log+Overall_Material+Grade_Living_Area/Total_Basement_Area+BsmtFinSF1_sqrt+Exposure_Level, data = PPT)
+summary(fit_final3) ###87 WIN normalizePath
 

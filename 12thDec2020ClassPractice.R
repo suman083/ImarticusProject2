@@ -6,7 +6,7 @@ summary(BankCreditCard)
 barplot(BankCreditCard$Credit_Amount)
 barplot(table(BankCreditCard$Gender))
         
-a = table(BankCreditCard$Gender,)
+a = table(BankCreditCard$Gender)
 a
 view(a)
 barplot(a, col=c("blue","red"),
@@ -44,12 +44,14 @@ barplot(d, col=c("blue","red","Green","yellow","pink","black","orange"),
         names.arg = c("no delay","1 m d","2 m d","3 m d", "4 m d ", "5 m d","6 m d"))
 
 library(RColorBrewer)
+brewer.pal.info
+view(brewer.pal)
 
 str(BankCreditCard)
 d = table(BankCreditCard$Repayment_Status_Jan)
 d
 dim(d)
-barplot(d, col = brewer.pal(6,'Set3'),
+barplot(d, col = brewer.pal(6,'BrBG'),
         main = " Repayment_Status_Jan",
         names.arg = c("no delay","1 m d","2 m d","3 m d", "4 m d ", "5 m d","6 m d"))
 
@@ -57,7 +59,7 @@ str(BankCreditCard)
 d = table(BankCreditCard$Repayment_Status_Jan)
 d
 dim(d)
-barplot(d, col = brewer.pal(6,'Set3'),
+barplot(d, col = brewer.pal(6,'Pastel1'),
         main = " Repayment_Status_Jan",
         names.arg = c("no delay","1 m d","2 m d","3 m d", "4 m d ", "5 m d","6 m d"))
 str(BankCreditCard)
