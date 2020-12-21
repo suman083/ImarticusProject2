@@ -733,4 +733,4 @@ vif(last_lm)
 
 fit_final3=lm(Sale_Price~Exterior_Material+Neighborhood+Remodel_Year+Construction_Year+Basement_Height+Fireplaces+Lot_Size_log+Overall_Material+Grade_Living_Area/Total_Basement_Area+BsmtFinSF1_sqrt+Exposure_Level, data = PPT)
 summary(fit_final3) ###87 WIN normalizePath
-
+ 
