@@ -1,4 +1,4 @@
-setwd("G:/Suman/batch34/TM13122020/csw")
+setwd("G:/Suman/batch34/TM13122020")
 
 getwd()
 library(tm)

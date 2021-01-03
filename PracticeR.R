@@ -91,3 +91,30 @@ infantry <- read.csv("G:/Suman/batch34/basicsofr/infantry.csv", stringsAsFactors
 targets <- read.csv("G:/Suman/batch34/basicsofr/targets.csv", stringsAsFactors=TRUE)
 steve<-merge(x=infantry,y=targets)
 steve
+
+###
+cs2m <- read.csv("G:/Suman/batch34/cs2m.csv", stringsAsFactors=TRUE)
+
+dim(cs2m)
+str(cs2m)
+summary(cs2m)
+cs2m$Prgnt<-as.factor(cs2m$DrugR)
+str(cs2m)
+cs2m$AnxtyLH<-as.factor(cs2m$AnxtyLH)
+str(cs2m)
+summary(cs2m)
+hist(cs2m$Age,main='Histogra of age' ,col = 'blue',xlab = 'Age',ylab = 'Frequency')
+
+##psych
+library(psych)
+describe(cs2m$Age)
+boxplot(cs2m$Age,horizontal = T)
+B=c(210,22,20.5,22,23,24.5,24.7,25,31,27,26.5,25.3)
+B
+hist(B)
+boxplot(B)
+par(mfrow=c(3,1))
+library(RColorBrewer)
+brewer.pal.info
+barplot(table(cs2m$AnxtyLH),col = brewer.pal(2,'BrBG'))
+pairs.panels(cs2m[,c(1,2,3)])
