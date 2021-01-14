@@ -31,12 +31,12 @@ summary(model21)
 
 ###Accurecy 
 ###prediction
-predict(model21,student1)
+predict(model21,studentTest1)
 
-predict(model21,student1[c(1,10,15),],type = 'prob')
+predict(model21,studentTest1[c(1,10,15),],type = 'prob')
 #Accuracy of model
 
-cm<-table(predict(model21),student1$Grade)
+cm<-table(predict(model21),studentTest1$Grade)
 print(cm)
 
 1-sum(diag(cm))/sum(cm)  ##wrong prediction
@@ -60,3 +60,16 @@ print(cm)
 #correct prediction
 sum(diag(cm))/sum(cm)
 
+##2 tail z test 
+z<-summary(model21)$coefficients/summary(model21)$standard.error
+p<-(1-pnorm(abs(z),0,1))*2
+p
+
+c<-12+13+5+7+3+6 ##correct 
+ ##total =3
+t<-12+13+5+7+3+6+(1+2+2+1+2+3+3)
+w<-(1+2+2+1+2+3+3)
+w
+p<-c/t
+1-p
+w/t

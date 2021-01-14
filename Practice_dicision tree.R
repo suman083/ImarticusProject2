@@ -14,10 +14,10 @@ prop.table(table(studentTest$Grade))
 table(studentTest$Grade)
 modelclassTree<-tree(Grade ~ Motivation+Age+Gender, data = student)
 plot(modelclassTree)
-
+summary(modelclassTree)
 
 #Regression tree / decision tree
-View(student)
+#View(student)
 names(student)
 nrow(student)
 ncol(student)
@@ -29,9 +29,26 @@ stuTest<-student[select_row,]
 stuTrain<-student[-(select_row),]
 modelReg_tree<-tree(Mark~Motivation+Gender+Age, data = stuTrain)
 plot(modelReg_tree)
+
+plot(Mark~Motivation, data = student)
+abline(lm(Mark~Motivation, data = student),col='blue')
+modelLR<-lm(Mark~Motivation + Gender + Age, data =student )
+summary(modelLR)
+
+plot(Mark~Age, data = student)
+abline(lm(Mark~Age, data = student),col='blue')
+
+
 text(modelReg_tree,pretty = 0,cex=0.75)
 pred_1<-predict(modelReg_tree,newdata = stuTest)
 head(pred_1,nrow=5)
+library(HH)
+vif(modelLR)
+error=residuals(modelLR)
+hist(error,col='red')
+library(car)
+
+durbinWatsonTest(modelLR)
 
 ME<-sum(stuTest$Mark-pred_1)/nrow(stuTest)
 ME
@@ -62,4 +79,15 @@ MAPE_LR
 
 
 ###decision tree is having less RMSE value
+
+
+###plot(Mark~Motivation, data = student)
+From Me to Everyone:  10:17 AM
+plot(x, y, main = "Main title",
+     xlab = "X axis title", ylab = "Y axis title",
+     pch = 19, frame = FALSE)
+abline(lm(y ~ x, data = mtcars), col = "blue")
+From Padmaraj Khobare to Everyone:  10:18 AM
+abline(lm(y~x, data =students), col = blue)
+
 
